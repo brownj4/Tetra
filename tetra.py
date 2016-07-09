@@ -15,7 +15,7 @@ import os
 from PIL import Image
 import scipy.ndimage
 import scipy.optimize
-import scipy.misc
+import scipy.stats
 import glob
 
 # directory containing input images
@@ -648,11 +648,9 @@ def tetra(image_file_name):
           image_center_vector = np.dot(rotation_matrix.T, np.array((1,0,0)))
           num_nearby_catalog_stars = len(get_nearby_stars_compressed_course(image_center_vector, fov_half_diagonal_rad))
           # calculate probability of a single random image centroid matching to a catalog star
-          single_star_match_probability = num_nearby_catalog_stars * match_radius ** 2 * (width / height)
+          single_star_match_probability = num_nearby_catalog_stars * match_radius ** 2 * width / height
           # apply binomial theorem to calculate probability upper bound on this many mismatches
-          mismatch_probability_upper_bound = 1 - sum([scipy.misc.comb(num_nearby_catalog_stars, i) * \
-                                                      single_star_match_probability ** i * \
-                                                      (1 - single_star_match_probability) ** (num_nearby_catalog_stars - i) for i in range(len(matches))])
+          mismatch_probability_upper_bound = 1 - scipy.stats.binom.cdf(len(matches)-1, num_nearby_catalog_stars, single_star_match_probability)
           # if a high probability match has been found, recompute the attitude using all matching stars
           if mismatch_probability_upper_bound < max_mismatch_probability:
             # recalculate the rotation matrix using the newly identified stars
