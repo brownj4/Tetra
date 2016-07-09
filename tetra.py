@@ -77,7 +77,7 @@ window_radius = 2
 max_pattern_checking_stars = 8
 
 # maximum probability of mismatch for verifying an attitude determination
-max_mismatch_probability = .00001
+max_mismatch_probability = 1e-20
 
 # percentage of fine sky map that stores values
 fine_sky_map_fill_factor = .5
@@ -647,12 +647,14 @@ def tetra(image_file_name):
           # find number of catalog stars appear in a circumscribed circle around the image
           image_center_vector = np.dot(rotation_matrix.T, np.array((1,0,0)))
           num_nearby_catalog_stars = len(get_nearby_stars_compressed_course(image_center_vector, fov_half_diagonal_rad))
-          # calculate probability of a single random image centroid matching to a catalog star
-          single_star_match_probability = num_nearby_catalog_stars * match_radius ** 2 * width / height
+          # calculate probability of a single random image centroid mismatching to a catalog star
+          single_star_mismatch_probability = 1 - num_nearby_catalog_stars * match_radius ** 2 * width / height
           # apply binomial theorem to calculate probability upper bound on this many mismatches
-          mismatch_probability_upper_bound = 1 - scipy.stats.binom.cdf(len(matches)-1, num_nearby_catalog_stars, single_star_match_probability)
+          mismatch_probability_upper_bound = scipy.stats.binom.cdf(num_nearby_catalog_stars - len(matches), num_nearby_catalog_stars, single_star_mismatch_probability)
           # if a high probability match has been found, recompute the attitude using all matching stars
           if mismatch_probability_upper_bound < max_mismatch_probability:
+            # diplay mismatch probability in scientific notation
+            print ("mismatch probability: %.4g" % mismatch_probability_upper_bound)
             # recalculate the rotation matrix using the newly identified stars
             rotation_matrix = find_rotation_matrix(*zip(*matches))
             # recalculate matched stars given new rotation matrix
