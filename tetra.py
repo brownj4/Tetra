@@ -650,7 +650,7 @@ def tetra(image_file_name):
           # calculate probability of a single random image centroid mismatching to a catalog star
           single_star_mismatch_probability = 1 - num_nearby_catalog_stars * match_radius ** 2 * width / height
           # apply binomial theorem to calculate probability upper bound on this many mismatches
-          mismatch_probability_upper_bound = scipy.stats.binom.cdf(num_nearby_catalog_stars - len(matches), num_nearby_catalog_stars, single_star_mismatch_probability)
+          mismatch_probability_upper_bound = scipy.stats.binom.cdf(len(star_centroids) - len(matches), len(star_centroids), single_star_mismatch_probability)
           # if a high probability match has been found, recompute the attitude using all matching stars
           if mismatch_probability_upper_bound < max_mismatch_probability:
             # diplay mismatch probability in scientific notation
