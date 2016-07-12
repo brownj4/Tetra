@@ -640,6 +640,22 @@ def tetra(image_file_name):
               catalog_vectors.append(matching_stars)
             # stars must uniquely match a catalog star brighter than magnitude_minimum
             matches = [(image_vector, catalog_star[0]) for (image_vector, catalog_star) in zip(all_star_vectors, catalog_vectors) if len(catalog_star) == 1]
+            # catalog stars must uniquely match image stars
+            matches_hash = {}
+            # add the matches to the hash one at a time
+            for (image_vector, catalog_vector) in matches:
+              # exactly one image vector must match
+              if tuple(catalog_vector) in matches_hash:
+                matches_hash[tuple(catalog_vector)] = "multiple matches"
+              else:
+                matches_hash[tuple(catalog_vector)] = image_vector
+            # reverse order so that image vector is first in each pair
+            matches = []
+            for (catalog_vector, image_vector) in matches_hash.items():
+              # filter out catalog stars with multiple image star matches
+              if image_vector == "multiple matches":
+                continue
+              matches.append((image_vector, np.array(catalog_vector)))
             return matches
           
           matches = find_matches(all_star_vectors, rotation_matrix)
@@ -650,7 +666,8 @@ def tetra(image_file_name):
           # calculate probability of a single random image centroid mismatching to a catalog star
           single_star_mismatch_probability = 1 - num_nearby_catalog_stars * match_radius ** 2 * width / height
           # apply binomial theorem to calculate probability upper bound on this many mismatches
-          mismatch_probability_upper_bound = scipy.stats.binom.cdf(len(star_centroids) - len(matches), len(star_centroids), single_star_mismatch_probability)
+          # three of the matches account for the dimensions of freedom: position, rotation, and scale
+          mismatch_probability_upper_bound = scipy.stats.binom.cdf(len(star_centroids) - (len(matches) - 3), len(star_centroids) - 3, single_star_mismatch_probability)
           # if a high probability match has been found, recompute the attitude using all matching stars
           if mismatch_probability_upper_bound < max_mismatch_probability:
             # diplay mismatch probability in scientific notation
