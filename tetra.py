@@ -10,8 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import numpy as np
 import itertools
-import shelve
-import os
 from PIL import Image
 import scipy.ndimage
 import scipy.optimize
