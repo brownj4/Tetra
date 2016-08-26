@@ -505,7 +505,7 @@ def tetra(image_file_name):
     # create a list of the pattern's centroid indices
     # add the lower and upper index bounds as the first
     # and last elements, respectively
-    pattern_indices = [-1] + range(pattern_size) + [len(star_centroids)]
+    pattern_indices = [-1] + list(range(pattern_size)) + [len(star_centroids)]
     # output the very brightest centroids before doing anything else
     yield star_centroids[pattern_indices[1:-1]]
     # iterate until the very dimmest centroids have been output
@@ -735,5 +735,5 @@ def tetra(image_file_name):
   print("failed to determine attitude")
 
 for image_file_name in glob.glob(image_directory + '/*'):
-  print image_file_name
+  print(image_file_name)
   tetra(image_file_name)
