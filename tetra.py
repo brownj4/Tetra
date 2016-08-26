@@ -220,7 +220,7 @@ if read_failed or str(parameters) != stored_parameters:
   # create boolean indicator list for which star vectors are double stars
   doubles = [0] * len(stars)
   for star_num1 in range(len(stars)):
-    for star_num2 in xrange(star_num1 + 1, len(stars)):
+    for star_num2 in range(star_num1 + 1, len(stars)):
       # skip checking star pairs with x component differences which
       # are already larger than the minimum allowable angle
       if stars[star_num2][0][0] - stars[star_num1][0][0] >= min_angle:
