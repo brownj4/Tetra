@@ -476,7 +476,7 @@ def tetra(image_file_name):
     # correct the star center position using the calculated center of mass to create a centroid
     star_centroids.append((y + y_center, x + x_center))
   # sort star centroids from brightest to dimmest by comparing the total masses of their window pixels
-  star_centroids.sort(key=lambda (y,x):-np.sum(normalized_image[y-window_radius:y+window_radius+1, x-window_radius:x+window_radius+1]))
+  star_centroids.sort(key=lambda yx:-np.sum(normalized_image[yx[0]-window_radius:yx[0]+window_radius+1, yx[1]-window_radius:yx[1]+window_radius+1]))
 
   # compute list of (i,j,k) vectors given list of (y,x) star centroids and
   # an estimate of the image's field-of-view in the x dimension
