@@ -1,7 +1,7 @@
 # Tetra
 
 ##Try Tetra Out
-Test Tetra before you download it with the <a href="https://s3.amazonaws.com/startracking/index.html" target="_blank">Web Demo</a>.
+Test Tetra before you download it with the web demo: <a href="http://tetra.rocks" target="_blank">tetra.rocks</a>.
 
 ##Run Tetra on Your Personal Computer
 
