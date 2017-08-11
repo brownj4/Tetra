@@ -59,7 +59,7 @@
 /* Maximum number of stars per image. */
 #define max_stars_per_image 25
 /* Number of test images. */
-#define num_images 100000
+#define num_images 1000
 /* Mathematical constant pi's approximate value. */
 #define PI 3.1415926
 
