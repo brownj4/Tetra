@@ -239,7 +239,7 @@ if read_failed or str(parameters) != stored_parameters:
   # add all non-double stars brighter than magnitude_minimum to the star table and sky maps
   star_table = np.zeros((STARN+1, 3), dtype=np.float32)
   # create fine sky map hash table, which maps vectors to star ids
-  fine_sky_map = np.zeros(len(stars) / fine_sky_map_fill_factor, dtype=np.uint16)
+  fine_sky_map = np.zeros(int(len(stars) / fine_sky_map_fill_factor), dtype=np.uint16)
   # create course sky map hash table, which maps vectors to star ids
   course_sky_map = {}
   for (vector, mag, star_id) in stars_no_doubles:
@@ -264,7 +264,7 @@ if read_failed or str(parameters) != stored_parameters:
   # create compressed version of course sky map by indirectly mapping vectors to star ids
   # the map consists of a hash table, a superlist of stars, and a number representing the size of the hash table
   # the hash table consists of pairs of indices which slice the superlist into the output star id lists
-  compressed_course_sky_map_hash_table_size = 2 * len(course_sky_map.keys()) / course_sky_map_fill_factor
+  compressed_course_sky_map_hash_table_size = int(2 * len(course_sky_map.keys()) / course_sky_map_fill_factor)
   compressed_course_sky_map = np.zeros(compressed_course_sky_map_hash_table_size + len(stars_no_doubles) + 1, dtype=np.uint16)
   compressed_course_sky_map[-1] = compressed_course_sky_map_hash_table_size
   # add the items of the course sky map to the compressed course sky map one at a time
