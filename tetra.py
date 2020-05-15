@@ -357,7 +357,7 @@ if read_failed or str(parameters) != stored_parameters:
 
   # insert star patterns into pattern catalog hash table
   print("inserting patterns into catalog...")
-  pattern_catalog = np.zeros((num_patterns_found / catalog_fill_factor, pattern_size), dtype=np.uint16)
+  pattern_catalog = np.zeros((int(num_patterns_found / catalog_fill_factor), pattern_size), dtype=np.uint16)
   for pattern in pattern_list:
     # retrieve the vectors of the stars in the pattern
     vectors = np.array([star_table[star_id] for star_id in pattern])
